@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copilot AI Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <h1>Assistant Copilot AI</h1>
+    <textarea id="userQuestion" placeholder="Posez une question à Copilot..."></textarea>
+    <button onclick="sendRequest()">Envoyer</button>
+    <div id="response"></div>
+</div>
+
+<script>
+    async function sendRequest() {
+        const question = document.getElementById('userQuestion').value;
+        if (!question) {
+            alert('Veuillez entrer une question.');
+            return;
+        }
+
+        try {
+            const response = await fetch('https://copilotstudio.microsoft.com/tryit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Ajoutez d'autres en-têtes ici si nécessaire pour l'authentification
+                },
+                body: JSON.stringify({ question: question })
+            });
+
+            const data = await response.json();
+
+            document.getElementById('response').innerText = data.response || 'Aucune réponse trouvée.';
+        } catch (error) {
+            console.error('Erreur:', error);
+            document.getElementById('response').innerText = 'Erreur lors de l\'envoi de la requête.';
+        }
+    }
+</script>
+
+</body>
+</html>
